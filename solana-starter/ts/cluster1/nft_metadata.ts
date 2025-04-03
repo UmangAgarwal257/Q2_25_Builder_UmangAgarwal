@@ -17,14 +17,14 @@ umi.use(signerIdentity(signer));
         // Follow this JSON structure
         // https://docs.metaplex.com/programs/token-metadata/changelog/v1.0#json-structure
 
-        const image = "https://devnet.irys.xyz/HLzVJVWWS6gDBDgA1AgU67VxKRWgky4gSXtLZ7XMtW5e"
+        const image = "https://devnet.irys.xyz/8Zw2rSSssu28rcedDATtHU4qeuUYf9x7ntoqveRRb8vt"
         const metadata = {
-            name: "Jeff Rug",
-            symbol: "JEF",
-            description: "my nft",
+            name: "IPL NFT Collection",
+            symbol: "CSK",
+            description: "NFT for IPL",
             image,
             attributes: [
-                {trait_type: 'tall', value: 'legendary'}
+                {trait_type: 'team', value: 'legendary'}
             ],
             properties: {
                 files: [

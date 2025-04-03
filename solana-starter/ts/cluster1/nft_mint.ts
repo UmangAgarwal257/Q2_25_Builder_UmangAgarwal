@@ -16,7 +16,7 @@ umi.use(mplTokenMetadata())
 const mint = generateSigner(umi);
 
 (async () => {
-    let tx = await createNft(umi, {mint, name : "Tall Jeff", symbol : "JEF" , uri : "https://devnet.irys.xyz/CRJHMzvyKXCgFvdK1JPmH73XbaWVmpFb9LRG1v6vkKJC", sellerFeeBasisPoints : percentAmount(4)})
+    let tx = await createNft(umi, {mint, name : "IPL NFT Collection", symbol : "CSK" , uri : "https://devnet.irys.xyz/Eo4GdN1magNuxnXD2jkJjbSgJgLvHbts1oPcvMaBzfGC", sellerFeeBasisPoints : percentAmount(4)})
     let result = await tx.sendAndConfirm(umi);
     const signature = base58.encode(result.signature);
     
@@ -26,3 +26,4 @@ const mint = generateSigner(umi);
 })();
 
 // mint address = HVRbA1upEN22TiiM87kDLwKV6gkjJcS55vAEiuH26ZFM
+// 7GpEnYoM9U6TiPaFK7JEubaVVRW1ogtm9Q45sMVoH2Lw
