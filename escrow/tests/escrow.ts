@@ -1,12 +1,12 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { AnchorVault } from "../target/types/anchor_vault";
+import { Escrow } from "../target/types/escrow";
 
-describe("vault-anchor", () => {
+describe("escrow", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.vaultAnchor as Program<AnchorVault>;
+  const program = anchor.workspace.escrow as Program<Escrow>;
 
   it("Is initialized!", async () => {
     // Add your test here.
@@ -14,6 +14,3 @@ describe("vault-anchor", () => {
     console.log("Your transaction signature", tx);
   });
 });
-
-// declare_id!("4xYaXtLkkXFPxN6u148ic5saGuSBD6nYF44hkKWacKQW");
-// #![allow(unexpected_cfgs)]
