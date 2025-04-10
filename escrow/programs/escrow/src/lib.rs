@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 pub mod instructions;
 pub mod state;
 
-pub use instructions::*;
+use crate::instructions::*;
 
 declare_id!("HyrodCdYTKX4TFPpDpuH8pDVb2cKmzkn824btBf1DmvY");
 
@@ -11,15 +11,27 @@ declare_id!("HyrodCdYTKX4TFPpDpuH8pDVb2cKmzkn824btBf1DmvY");
 pub mod escrow {
     use super::*;
 
-    pub fn initialize(
-        ctx: Context<Initialize>,
+    pub fn make(
+        ctx: Context<Make>,
         seed: u64,
-        deposit: u64,
-        receive: u64,
+        receive_amount: u64,
+        deposit_amount: u64,
     ) -> Result<()> {
-        ctx.accounts.deposit()
+        ctx.accounts.init_escrow(seed, receive_amount, &ctx.bumps)?;
+        ctx.accounts.deposit(deposit_amount)?;
+        Ok(())
+    }
+
+    pub fn take(ctx: Context<Take>) -> Result<()> {
+        ctx.accounts.transfer_to_maker()?;
+        ctx.accounts.transfer_to_taker()?;
+        ctx.accounts.close_vault()?;
+        Ok(())
+    }
+
+    pub fn refund(ctx: Context<Refund>) -> Result<()> {
+        ctx.accounts.refund()?;
+        ctx.accounts.close()?;
+        Ok(())
     }
 }
-
-#[derive(Accounts)]
-pub struct Initialize {}
