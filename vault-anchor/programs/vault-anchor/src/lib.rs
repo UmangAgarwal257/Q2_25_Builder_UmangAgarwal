@@ -50,6 +50,7 @@ pub struct Payment<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
     #[account(
+        mut,
         seeds = [b"vault", user.key().as_ref()],
         bump = vault_state.vault_bump,
     )]
