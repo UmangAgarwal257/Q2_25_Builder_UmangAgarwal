@@ -53,7 +53,7 @@ pub struct List<'info> {
         seeds = [b"metdata", metadata_program.key().as_ref(), maker_mint.key().as_ref()],
         seeds::program = metadata_program.key(),
         bump,
-        constraint = metadata.collection.as_ref().unwrap().key().as_ref() == collection_mint.key().as_ref(),
+        constraint = metadata.collection.as_ref().unwrap().key.as_ref() == collection_mint.key().as_ref(),
         constraint = metadata.collection.as_ref().unwrap().verified == true,
     )]
     pub metadata: Account<'info, MetadataAccount>,
@@ -73,6 +73,27 @@ pub struct List<'info> {
 
 impl<'info> List<'info> {
     pub fn create_listing(&mut self, price: u64, bumps: &ListBumps) -> Result<()> {
+        self.listing.set_inner(Listing {
+            maker: self.maker.key(),
+            maker_mint: self.maker_mint.key(),
+            price,
+            bump: bumps.listing,
+        });
+        Ok(())
+    }
+
+    pub fn deposit_nft(&mut self) -> Result<()> {
+        let cpi_program = self.token_program.to_account_info();
+
+        let cpi_accounts: TransferChecked = TransferChecked {
+            from: self.maker_ata.to_account_info(),
+            mint: self.maker_mint.to_account_info(),
+            to: self.vault.to_account_info(),
+            authority: self.maker.to_account_info(),
+        };
+
+        let cpi_context = CpiContext::new(cpi_program, cpi_accounts);
+        transfer_checked(cpi_context, self.maker_ata.amount, self.maker_mint.decimals)?;
         Ok(())
     }
 }
