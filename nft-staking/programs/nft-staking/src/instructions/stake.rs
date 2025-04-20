@@ -76,6 +76,50 @@ impl<'info> Stake<'info> {
             self.user_account.amount_staked <= self.config.max_stake,
             StakeError::MaxStakeReached
         );
-        todo!()
+
+        let cpi_program = self.token_program.to_account_info();
+        let cpi_accounts = Approve {
+            to: self.mint_ata.to_account_info(),
+            delegate: self.stake_account.to_account_info(),
+            authority: self.user.to_account_info(),
+        };
+
+        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
+        approve(cpi_ctx, 1)?;
+
+        let delegate = &self.stake_account.to_account_info();
+        let token_account = &self.mint_ata.to_account_info();
+        let edition = &self.master_edition.to_account_info();
+        let mint = &self.mint.to_account_info();
+        let token_program = &self.token_program.to_account_info();
+        let metadata = &self.metadata.to_account_info();
+
+        let seeds: &[&[u8]; 4] = &[
+            b"stake",
+            self.config.to_account_info().key.as_ref(),
+            self.mint.to_account_info().key.as_ref(),
+            &[self.stake_account.bump],
+        ];
+        let signer_seeds: &[&[&[u8]]; 1] = &[&seeds[..]];
+
+        FreezeDelegatedAccountCpi::new(
+            metadata,
+            FreezeDelegatedAccountCpiAccounts {
+                delegate,
+                token_account,
+                edition,
+                mint,
+                token_program,
+            },
+        )
+        .invoke_signed(signer_seeds)?;
+
+        self.stake_account.set_inner(StakeAccount {
+            owner: self.user.key(),
+            mint: self.mint.key(),
+            staked_at: Clock::get()?.unix_timestamp,
+            bump: bumps.stake_account,
+        });
+        Ok(())
     }
 }
