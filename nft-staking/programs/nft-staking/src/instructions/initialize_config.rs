@@ -1,5 +1,5 @@
 use crate::StakeConfig;
-use anchor_lang::{prelude::*, solana_program::stake::state::Stake};
+use anchor_lang::prelude::*;
 use anchor_spl::token::{Mint, Token};
 
 #[derive(Accounts)]
