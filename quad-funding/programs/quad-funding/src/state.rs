@@ -1,3 +1,4 @@
+use anchor_lang::prelude::borsh::de;
 pub use anchor_lang::prelude::*;
 
 #[account]
@@ -6,6 +7,7 @@ pub struct Dao {
     #[max_len(500)]
     pub name: String,
     pub authority: Pubkey,
+    pub proposal_count: u64,
     pub bump: u8,
 }
 
@@ -21,6 +23,7 @@ pub struct Proposal {
 }
 
 #[account]
+#[derive(Debug, InitSpace)]
 pub struct Vote {
     pub authority: Pubkey,
     pub vote_type: u8,
