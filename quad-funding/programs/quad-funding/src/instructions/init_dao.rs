@@ -1,3 +1,4 @@
+#![allow(unexpected_cfgs)]
 pub use anchor_lang::prelude::*;
 
 use crate::state::Dao;

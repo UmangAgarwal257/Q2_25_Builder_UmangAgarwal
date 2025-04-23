@@ -1,3 +1,4 @@
+#![allow(unexpected_cfgs)]
 mod instructions;
 mod state;
 
@@ -10,7 +11,7 @@ pub mod quad_funding {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+        msg!("Initializing Quad Funding program");
         Ok(())
     }
 }

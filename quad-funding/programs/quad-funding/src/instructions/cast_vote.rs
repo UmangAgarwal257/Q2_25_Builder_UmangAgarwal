@@ -1,3 +1,4 @@
+#![allow(unexpected_cfgs)]
 use anchor_lang::prelude::*;
 
 use crate::state::{Dao, Proposal, Vote};
@@ -27,7 +28,7 @@ pub struct CastVote<'info> {
 
 pub fn cast_vote(ctx: Context<CastVote>, vote_type: u8) -> Result<()> {
     let vote_account = &mut ctx.accounts.vote_account;
-    let proposal_account = &mut ctx.accounts.proposal;
+    let _proposal_account = &mut ctx.accounts.proposal;
 
     let voting_credits = (ctx.accounts.creator_token_account.amount as f64).sqrt() as u64;
     vote_account.set_inner({
