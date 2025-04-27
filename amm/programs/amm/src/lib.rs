@@ -19,3 +19,16 @@ pub mod amm {
         initialize::handler(ctx)
     }
 }
+#[derive(Accounts)]
+pub struct Initialize<'info> {
+    #[account(init, payer = user, space = 8 + 32)]
+    pub amm_account: Account<'info, AmmAccount>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[account]
+pub struct AmmAccount {
+    pub owner: Pubkey,
+}
